@@ -35,6 +35,18 @@ module.exports.getByAnyIdentifier = async (identifier) => {
     return item;
 }
 
+module.exports.searchByAnyIdentifier = async (identifier) => {
+    const { data } = await getData();
+    identifier = identifier.toLowerCase();
+
+    const items = data.filter(({ name, symbol, slug }) =>
+        (name.toLowerCase()).includes(identifier) ||
+        (symbol.toLowerCase()).includes(identifier) ||
+        (slug.toLowerCase()).includes(identifier));
+
+    return items;
+}
+
 module.exports.getTop = async (top) =>{
     const { data } = await getData();
     return data.slice(0,top);

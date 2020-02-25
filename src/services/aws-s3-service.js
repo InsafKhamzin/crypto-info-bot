@@ -21,7 +21,6 @@ module.exports.readS3 = async () =>{
                 console.log('S3 error:', error.stack)
                 reject();
             }else{
-
                 resolve(JSON.parse(data.Body.toString()));
             }
         });

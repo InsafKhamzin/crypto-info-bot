@@ -1,5 +1,6 @@
 const { getTop } = require('../services/data-service');
-const {getEmoji} = require('../utils/message-util');
+const { quiz } = require('../services/quiz-service');
+const { getEmoji } = require('../utils/message-util');
 
 module.exports.commandHandler = (bot) => {
     //start
@@ -20,6 +21,10 @@ module.exports.commandHandler = (bot) => {
     bot.command('top50', async ctx => {
         const top10 = await getTop(50);
         ctx.replyWithMarkdown(formatTop(top10));
+    });
+
+    bot.command('quiz', async ctx => {
+        await quiz(ctx);
     });
 };
 
