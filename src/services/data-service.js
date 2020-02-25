@@ -1,7 +1,7 @@
 const { readS3, writeS3 } = require('./aws-s3-service');
 const { getAllCurrencies } = require('./cmc-service');
 
-module.exports.getData = async () => {
+const getData = async () => {
     try {
         let data = await readS3();
         if (data) {
@@ -21,4 +21,21 @@ module.exports.getData = async () => {
         console.log("get Data error:", error);
         throw new Error();
     }
+};
+
+module.exports.getByAnyIdentifier = async (identifier) => {
+    const { data } = await getData();
+    identifier = identifier.toLowerCase();
+
+    const item = data.find(({ name, symbol, slug }) =>
+        name.toLowerCase() === identifier ||
+        symbol.toLowerCase() === identifier ||
+        slug.toLowerCase() === identifier);
+
+    return item;
+}
+
+module.exports.getTop = async (top) =>{
+    const { data } = await getData();
+    return data.slice(0,top);
 };
