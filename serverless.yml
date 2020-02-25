@@ -1,0 +1,37 @@
+
+service: crypto-info-bot
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::crypto-info-bot/*"
+
+# you can define service wide environment variables here
+  environment:
+    BOT_TOKEN: 1085032316:AAGJUV_T5_MNxQg8BmcQ5VSDqYnkRaRzJRo
+    AWS_KEY: AKIA3KOG2JVWCGDHOZUD
+    AWS_SECRET: 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
+    API_KEY: 8da74d37-bad8-42a0-a904-0314c02321aa
+    MAX_UPDATE_TIME: 10,
+    HOOK_URL: {"Fn::Join": ["", ["https://", {"Ref" : "ApiGatewayRestApi"}, ".execute-api.${self:provider.region}.amazonaws.com/${self:provider.stage}"]]}
+
+
+functions:
+  app:
+    handler: index.start
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
